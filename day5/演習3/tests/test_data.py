@@ -6,6 +6,9 @@ import great_expectations as gx
 from sklearn.datasets import fetch_openml
 import warnings
 
+# コメントのテスト
+# test
+
 # 警告を抑制
 warnings.filterwarnings("ignore")
 
