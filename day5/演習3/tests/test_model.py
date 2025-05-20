@@ -192,10 +192,6 @@ def test_model_regression():
     accuracy_old = accuracy_score(y_test, model_old.predict(X_test))
 
     # 精度の比較
-    assert accuracy_new >= accuracy_old, (
-        f"新モデルの精度 ({accuracy_new:.4f}) が旧モデル ({accuracy_old:.4f}) より低下しています。"
-    )
-
-
-
-    
+    assert (
+        accuracy_new >= accuracy_old
+    ), f"新モデルの精度 ({accuracy_new:.4f}) が旧モデル ({accuracy_old:.4f}) より低下しています。"
