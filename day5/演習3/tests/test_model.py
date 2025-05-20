@@ -12,6 +12,16 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
+# from day5.演習3.train_model import train_model, load_data
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from train_model import train_model, load_data
+
+# baseline_path = os.path.join(os.path.dirname(__file__), "../models/titanic_model_baseline.pkl")
+# baseline_path = os.path.abspath(baseline_path)
+
 # テスト用データとモデルパスを定義
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "../models")
@@ -171,3 +181,26 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+def test_model_regression(train_model):
+    """旧モデルと新モデルの精度を比較して、劣化がないことを確認する"""
+    model_new, X_test, y_test = train_model
+
+    # 新モデルの精度
+    accuracy_new = accuracy_score(y_test, model_new.predict(X_test))
+
+    # 旧モデルの読み込み
+    # baseline_path = os.path.join("models", "titanic_model_baseline.pkl")
+    baseline_dir = os.path.join(os.path.dirname(__file__), "../models")
+    baseline_path = os.path.join(baseline_dir, "titanic_model_baseline.pkl")
+    assert os.path.exists(baseline_path), "ベースラインモデルが存在しません"
+
+    with open(baseline_path, "rb") as f:
+        model_old = pickle.load(f)
+    accuracy_old = accuracy_score(y_test, model_old.predict(X_test))
+
+    # 精度の比較
+    assert (
+        accuracy_new >= accuracy_old
+    ), f"新モデルの精度 ({accuracy_new:.4f}) が旧モデル ({accuracy_old:.4f}) より低下しています。"
