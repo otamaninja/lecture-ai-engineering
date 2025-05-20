@@ -1,0 +1,15 @@
+name: lecture-ai-engineering
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - kedro
+  - scikit-learn
+  - mlflow
+  - pandas
+  - pytest
+  - black
+  - pip
+  - pip:
+      - great_expectations
