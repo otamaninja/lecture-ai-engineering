@@ -8,8 +8,9 @@ import pandas as pd
 import os
 import pickle
 
+
 # データの読み込み関数
-#def load_data():
+# def load_data():
 #    df = pd.read_csv("data/Titanic.csv")
 #    X = df.drop("Survived", axis=1)
 #    y = df["Survived"]
@@ -24,33 +25,43 @@ def load_data():
     y = df["Survived"]
     return train_test_split(X, y, test_size=0.2, random_state=42)
 
+
 # モデル学習関数
 def train_model(X_train, y_train):
     numeric_features = ["Age", "Pclass", "SibSp", "Parch", "Fare"]
     categorical_features = ["Sex", "Embarked"]
 
-    numeric_transformer = Pipeline([
-        ("imputer", SimpleImputer(strategy="median")),
-        ("scaler", StandardScaler()),
-    ])
+    numeric_transformer = Pipeline(
+        [
+            ("imputer", SimpleImputer(strategy="median")),
+            ("scaler", StandardScaler()),
+        ]
+    )
 
-    categorical_transformer = Pipeline([
-        ("imputer", SimpleImputer(strategy="most_frequent")),
-        ("onehot", OneHotEncoder(handle_unknown="ignore")),
-    ])
+    categorical_transformer = Pipeline(
+        [
+            ("imputer", SimpleImputer(strategy="most_frequent")),
+            ("onehot", OneHotEncoder(handle_unknown="ignore")),
+        ]
+    )
 
-    preprocessor = ColumnTransformer([
-        ("num", numeric_transformer, numeric_features),
-        ("cat", categorical_transformer, categorical_features),
-    ])
+    preprocessor = ColumnTransformer(
+        [
+            ("num", numeric_transformer, numeric_features),
+            ("cat", categorical_transformer, categorical_features),
+        ]
+    )
 
-    clf = Pipeline([
-        ("preprocessor", preprocessor),
-        ("classifier", RandomForestClassifier(n_estimators=100, random_state=42)),
-    ])
+    clf = Pipeline(
+        [
+            ("preprocessor", preprocessor),
+            ("classifier", RandomForestClassifier(n_estimators=100, random_state=42)),
+        ]
+    )
 
     clf.fit(X_train, y_train)
     return clf
+
 
 # 実行スクリプト部分（学習＆保存）
 if __name__ == "__main__":
