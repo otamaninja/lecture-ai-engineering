@@ -39,3 +39,7 @@ jobs:
     - name: Run model tests
       run: |
         pytest day5/演習3/tests/test_model.py -v
+
+    - name: Run with coverage
+      run: |
+        pytest --cov=day5/演習3 day5/演習3/tests/
