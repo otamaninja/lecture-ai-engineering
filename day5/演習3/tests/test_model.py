@@ -11,6 +11,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+from day5.演習3.train_model import train_model, load_data
 
 # テスト用データとモデルパスを定義
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
@@ -171,3 +172,30 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+def test_model_regression():
+    """新旧モデルの精度を比較して、劣化がないことを確認する"""
+    # データの読み込み
+    X_train, X_test, y_train, y_test = load_data()
+
+    # 新しいモデルのトレーニング
+    model_new = train_model(X_train, y_train)
+    accuracy_new = accuracy_score(y_test, model_new.predict(X_test))
+
+    # 旧モデルの読み込み
+    baseline_path = os.path.join("models", "titanic_model_baseline.pkl")
+    assert os.path.exists(baseline_path), "ベースラインモデルが存在しません"
+
+    with open(baseline_path, "rb") as f:
+        model_old = pickle.load(f)
+    accuracy_old = accuracy_score(y_test, model_old.predict(X_test))
+
+    # 精度の比較
+    assert accuracy_new >= accuracy_old, (
+        f"新モデルの精度 ({accuracy_new:.4f}) が旧モデル ({accuracy_old:.4f}) より低下しています。"
+    )
+
+
+
+    
