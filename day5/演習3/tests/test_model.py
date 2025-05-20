@@ -204,4 +204,3 @@ def test_model_regression(train_model):
     assert (
         accuracy_new >= accuracy_old
     ), f"新モデルの精度 ({accuracy_new:.4f}) が旧モデル ({accuracy_old:.4f}) より低下しています。"
-
