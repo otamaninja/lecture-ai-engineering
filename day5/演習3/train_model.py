@@ -55,7 +55,7 @@ def train_model(X_train, y_train):
     clf = Pipeline(
         [
             ("preprocessor", preprocessor),
-            ("classifier", RandomForestClassifier(n_estimators=100, random_state=42)),
+            ("classifier", RandomForestClassifier(n_estimators=300, random_state=42)),
         ]
     )
 
