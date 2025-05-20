@@ -17,7 +17,7 @@ class LLMClient:
         """
         self.api_url = api_url.rstrip('/')
         self.session = requests.Session()
-    
+        
     def health_check(self):
         """
         ヘルスチェック
@@ -67,8 +67,9 @@ class LLMClient:
 # 使用例
 if __name__ == "__main__":
     # ngrok URLを設定（実際のURLに置き換えてください）
-    NGROK_URL = "https://your-ngrok-url.ngrok.url"
-    
+    #NGROK_URL = "https://your-ngrok-url.ngrok.url"
+    NGROK_URL = "https://7651-34-80-221-186.ngrok-free.app"
+
     # クライアントの初期化
     client = LLMClient(NGROK_URL)
     
@@ -78,10 +79,19 @@ if __name__ == "__main__":
     print()
     
     # 単一の質問
+    '''
     print("Simple question:")
     result = client.generate([
-        {"prompt": "AIについて100文字で教えてください"}
+        #{"prompt": "Please tell about AI"}
+        {"Please tell about AI"}
     ])
     print(f"Response: {result['generated_text']}")
     print(f"Model processing time: {result['response_time']:.2f}s")
     print(f"Total request time: {result['total_request_time']:.2f}s")    
+    '''
+    # 単一の質問
+    print("Simple question:")
+    result = client.generate("Please tell about AI")
+    print(f"Response: {result['generated_text']}")
+    print(f"Model processing time: {result['response_time']:.2f}s")
+    print(f"Total request time: {result['total_request_time']:.2f}s")
